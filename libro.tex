@@ -1,0 +1,139 @@
+%%	Esta es la plantilla para comenzar a crear un libro de tesis.
+%%	En los comentarios se pueden encontrar los diferentes comandos
+%%	que se pueden usar para personalizar el trabajo.
+%%
+%%	La clase tesisusb está basada por la que creó Kevin Hernandez en 2005.
+%%	Esta versión requiere del motor texlive-xetex, y del paquete 
+%%	texlive-latex3.
+%%
+%%	Se dispone de un comando para insertar imágenes: \imagen[]{}
+%%	se usa en forma parecida a \includegraphics, pero permite
+%%	marco y sombras. El código fuente que permite hacer esto fue
+%%	conseguido en http://tex.stackexchange.com/a/11483/3954
+
+\documentclass[]{tesisusb}
+%%	La clase tesisusb carga por defecto los siguientes paquetes:
+%%		graphicx,siunitx,fontspec
+\usepackage[]{tesisusb}
+%%	El paquete tesisusb carga por defecto los siguientes paquetes:
+%%		calc,setspace,fancyhdr,geometry,textcase,indentfirst,
+%%		caption,subcaption,tocloft,hyperref,cite,calc,tikz.
+
+\include{lib/config}			% Para incluir los paquetes extra que se necesiten
+\usepackage{lipsum}
+
+%\include{lib/funciones}		% 
+
+%%	=================
+%%	Datos del Trabajo
+%%	=================
+
+%%	Tipo de trabajo (uno de los siguientes)
+%%		\tesispregrado
+%%		\tesismaestria
+%%		\tesisdoctoral
+%%		\informepasantia
+
+\tesispregrado
+
+%%	Comandos disponibles
+%%		\universidad{}		- Valor por defecto: Universidad Simón Bolívar
+%%		\instituto{}			- En caso de que se trate de un instituto
+%%		\logo{}				- Logo de la institución
+%%		\decanato{}
+%%		\coordinacion{}
+%%		\programa{}			- Carrera. Ejm. Licenciatura en Física
+%%		\titulogrado{}		- Título a obtener. Ejm. Licenciado en Física
+%%		\fecha{}				- Mes y año de entrega del trabajo ante la coordinación
+%%		\autor{}				- Nombre completo del estudiante
+%%		\carnet{}
+%%		\titulo{}			- Título del Trabajo
+%%		\tutor[f ó m]{}		- Tutor del trabajo
+%%		\cotutor[f ó m]{}	- Opcional
+%%		\asesor[f ó m]{}		- Opcional. Pensado para asesores externos en Pasantías
+
+\fecha{Octubre, 2013}
+\logo{logoUSB.png}	% dirige al archivo logoUSB.png
+\autor{Nombre1 Nombre2 Apellido1 Apellido2}
+\carnet{12-34567}
+\titulo{ Título del trabajo. De requerir una o más letras minúsculas, puede usar $\backslash$M\MakeLowercase{ake}L\MakeLowercase{owercase}\{\} }
+
+\tutor[m]{Nombre Apellido}
+%\tutor[f]{Gloria Buendía}
+%\cotutor[m]{Manolo}
+%\cotutor[f]{María}
+%\asesor[m]{Ing. Pepe}
+%\asesor[f]{Ing. Rosario}
+
+%%	==================================
+%%	Datos de la aprobación del trabajo
+%%	==================================
+
+%%	Generar página de aprobación
+%%		\aprobacionjurado
+
+\aprobacionjurado
+
+%%	Comandos disponibles
+%%		\fechaaprobacion{}
+%%		\mencionsobresaliente{}
+%%		\juradoA{texto bajo el nombre}{nombre}
+%%		\juradoB{texto bajo el nombre}{nombre}
+%%		\juradoC{texto bajo el nombre}{nombre}
+%%		\juradoD{texto bajo el nombre}{nombre}
+%%		\juradoE{texto bajo el nombre}{nombre}
+
+\fechaaprobacion{18 de octubre de 2013}
+%\mencionsobresaliente
+\juradoA{Presidente}{Prof. Nombre Apellido}
+\juradoB{Principal - Tutor}{Prof. Nombre Apellido}
+\juradoC{Principal Externo - UCV}{Prof. Nombre Apellido}
+%\juradoD{Co-tutor - USB}{Prof. Julio Walter}
+%\juradoE{Asesor - Empresa tal}{Prof. José A. López}
+
+%%	============================================
+%%	Inclusión del resto de las páginas iniciales
+%%	============================================
+
+%%	Comandos disponibles
+%%		\dedicatoria{}		- Dirección a archivo .tex
+%%		\agradecimientos{}	- Dirección a archivo .tex
+%%		\resumen{}			- Dirección a archivo .tex
+%%		\palabrasclave{}		- Conjunto de palabras clave separadas por coma
+
+\dedicatoria{lib/dedicatoria}
+\agradecimientos{lib/agradecimientos}
+\resumen{lib/resumen}
+\palabrasclave{PC1, PC2, PC3, etc.}
+
+\begin{document}
+
+
+% ÍNDICE DE CONTENIDOS
+\indicegeneral
+\listadetablas
+\listadefiguras
+
+\begin{onehalfspace}
+% COMIENZAN A ANEXARSE LOS CAPÍTULOS DEL LIBRO
+\cuerpo
+
+\include{capitulo}
+
+\chapter{Capitulo 2}
+\lipsum
+
+\apendices
+%Los capítulos de aquí en adelante aparecen como apéndices
+
+\chapter{Apéndice}
+\section{sección}
+\subsection{subsección}
+
+%\bibliographystyle{unsrt-es}
+%\bibliography{referencias.bib}
+
+\end{onehalfspace}
+\end{document}
+
+%$a \ b \; c \: d \, e \! f$

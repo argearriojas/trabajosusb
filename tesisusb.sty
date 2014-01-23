@@ -3,91 +3,21 @@
 %----------------------- OPCIONES Y PAQUETES
 %
 %
-\newif\if@ams \@amstrue
-\newif\if@tablas \@tablastrue
-\newif\if@figuras \@figurasfalse
-\newif\if@si \@sifalse
-\newif\if@hyp
-\newif\if@inputenc \@inputenctrue
-\newif\if@caption \@captiontrue
-\newif\if@cite \@citetrue
-\DeclareOption{ams}{\@amstrue}
-\DeclareOption{noams}{\@amsfalse}
-\DeclareOption{tablas}{\@tablastrue}
-\DeclareOption{notablas}{\@tablasfalse}
-\DeclareOption{figuras}{\@figurastrue}
-\DeclareOption{si}{\@sitrue}
-\DeclareOption{nohyperref}{\@hypfalse}
-\DeclareOption{noinputenc}{\@inputencfalse}
-\DeclareOption{nocaption}{\@captionfalse}
-\DeclareOption{nocite}{\@citefalse}
-\DeclareOption{hyperref}{\@hyptrue}
-\ifpdf
-  \DeclareOption{all}{\@amstrue\@tablastrue\@figurastrue\@sitrue\@hyptrue}
-\else
-  \DeclareOption{all}{\@amstrue\@tablastrue\@figurastrue\@sitrue}
-\fi
-\DeclareOption{none}{\@amsfalse\@tablasfalse\@hypfalse}
-\ifpdf
-  \@hyptrue
-\fi
-\ifxetex
-  \@hyptrue
-\fi
+
 \ProcessOptions\relax
 
-%\RequirePackage{ifxetex}
-
-%\ifxetex
-%  \RequirePackage{fontspec}
-%  \setmainfont{Times New Roman}
-%  \RequirePackage{polyglossia}
-%  \setmainlanguage{spanish}
-%\else
-%  \RequirePackage[T1]{fontenc}
-%  \RequirePackage[utf8]{inputenc}
-%  \RequirePackage[spanish,activeacute]{babel}
-%  \RequirePackage{lmodern}
-%\fi
-
-
-%\RequirePackage[spanish,es-lcroman,es-nolayout,es-tabla]{babel} %hyphenation, roman, cuadro->tabla
-%\RequirePackage[spanish,activeacute]{babel} %hyphenation, roman, cuadro->tabla
-
 \RequirePackage{calc,setspace,fancyhdr}
-\RequirePackage[letterpaper, top=2.5cm, bottom=2.5cm, right=2.5cm, left=3cm]{geometry} %M�rgenes de p�gina
+\RequirePackage[letterpaper, top=2.5cm, bottom=2.5cm, right=2.5cm, left=3cm]{geometry} %Márgenes de página
 \RequirePackage[overload]{textcase}
-\if@caption
-  \RequirePackage{caption}
-\fi
-%\providecommand{\inputencodingname}{}
-%\ifthenelse{\equal{\inputencodingname}{}}{\if@inputenc
-%  \RequirePackage[utf8]{inputenc}
-%\fi}{}
-\if@ams
-  \RequirePackage{amsfonts,amsmath,amssymb,amsthm}
-\fi
-\if@tablas
-  \RequirePackage{array,longtable,booktabs,multirow}
-\fi
-\if@si
-  \RequirePackage{siunitx}
-\fi
-\if@figuras
-  \RequirePackage[titles,subfigure]{tocloft}
-  \RequirePackage{subfigure}
-\else
-  \RequirePackage[titles]{tocloft}
-\fi
-\if@hyp
-  \RequirePackage[bookmarksnumbered=true, pdfstartview=FitH, pdfpagelayout=OneColumn]{hyperref}
-  \addto\extrasspanish{
-    \def\sectionautorefname{Sección}
-  }
-\fi
-\if@cite
-  \RequirePackage{cite}
-\fi
+\RequirePackage{indentfirst}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage[titles]{tocloft}
+\RequirePackage[bookmarksnumbered=true, pdfstartview=FitH, pdfpagelayout=OneColumn]{hyperref}
+\RequirePackage{cite}
+\RequirePackage{calc}
+\RequirePackage{tikz}
+\usetikzlibrary{shadows,calc}
 
 %
 %
@@ -103,7 +33,7 @@
 \fancyfoot[c]{\thepage}
 \setlength{\headheight}{14.5pt}
 \newif\if@cuerpo \@cuerpofalse
-\newcommand{\cuerpo}{    % Acomoda el n�mero de p�gina para el cuerpo
+\newcommand{\cuerpo}{    % Acomoda el número de página para el cuerpo
   \@cuerpotrue
   \if@openright\cleardoublepage\else\clearpage\fi
   \pagenumbering{arabic}
@@ -121,11 +51,9 @@
 %
 \setlength{\cftfigindent}{0pt}
 \setlength{\cfttabindent}{0pt}
-\if@figuras{
-  \setlength{\cftsubfigindent}{0pt}
-  \setlength{\cftsubtabindent}{0pt}
-\fi
-\cftsetpnumwidth{1.6em}%La caja del numero de pagina es muy peque�a para viii
+%\setlength{\cftsubfigindent}{0pt}
+%\setlength{\cftsubtabindent}{0pt}
+\cftsetpnumwidth{1.6em}%La caja del numero de pagina es muy pequeña para viii
 
 \setlength{\cftsecindent}{0pt}    %Elimina sangria para la [sub][sub]seccion
 \setlength{\cftsubsecindent}{0pt}
@@ -153,37 +81,82 @@
 
 
 
-%----------------------- BEGIN DOCUMENT (babel, caption, numeracion)
+%----------------------- BEGIN DOCUMENT (babel/polyglossia, caption, numeracion)
 \AtBeginDocument{
-  \def\today{Sartenejas, \ifcase\month\or                  %Formato de fecha para \today
-    Enero\or Febrero\or Marzo\or Abril\or Mayo\or Junio\or
-    Julio\or Agosto\or Septiembre\or Octubre\or Noviembre\or Diciembre\fi
-    \space de\space \number\year}
-   \renewcommand{\tablename}{Tabla}                    %DESCOMENTAR SI NO SE USA es-tabla EN BABEL
-   \renewcommand{\listtablename}{Índice de tablas}     %DESCOMENTAR SI NO SE USA es-tabla EN BABEL
-  \renewcommand{\bibname}{REFERENCIAS}   %Correccion a babel
-  \renewcommand{\appendixname}{APÉNDICE}                %Correccion a babel
-  \renewcommand{\contentsname}{ÍNDICE GENERAL}
-%   \renewcommand{\listtablename}{\'Indice de tablas}     %DESCOMENTAR SI NO SE USA es-tabla EN BABEL
-%  \renewcommand{\bibname}{REFERENCIAS BIBLIOGR\'AFICAS}   %Correccion a babel
-%  \renewcommand{\appendixname}{AP\'ENDICE}                %Correccion a babel
-%  \renewcommand{\contentsname}{\'INDICE GENERAL}
-  \renewcommand{\listfigurename}{LISTA DE FIGURAS}
-  \renewcommand{\listtablename}{LISTA DE TABLAS}
-  \settowidth\parindent{\ \ \ }                         %Sangria
-  \pagenumbering{roman}                                 %Numeracion romana para primeras paginas
-  \fancyfoot{}
-  \fancyhead[r]{\thepage}
-  \pagestyle{fancy}
-%  \setcounter{page}{1}                                  %Ajuste al numero de pagina. Resumen debe ser iv
-  \maketitle                                            %Hace caratula y pagina de titulo
-  \addtolength{\topmargin}{-2.5pt}                      %Correccion ligera al margen superior, puede depender de la letra
-  \setlength{\parskip}{6pt}                             %Distancia entre parrafos (interlineado + 6pt)
-  \if@caption
-    \DeclareCaptionLabelSeparator{punto}{. }              %Como separa etiqueta de texto (figuras y tablas)
-    \captionsetup[table]{labelsep=punto,labelfont=rm,aboveskip=6pt,belowskip=\baselineskip-6pt, position=top}
-    \captionsetup[figure]{labelsep=punto,labelfont=rm,aboveskip=8pt,belowskip=\baselineskip-6pt, position=bottom}
-  \fi
+	\def\today{Sartenejas, \ifcase\month\or                  %Formato de fecha para \today
+		Enero\or Febrero\or Marzo\or Abril\or Mayo\or Junio\or
+		Julio\or Agosto\or Septiembre\or Octubre\or Noviembre\or Diciembre\fi
+		\space de\space \number\year}
+	\renewcommand{\tablename}{Tabla}                    %DESCOMENTAR SI NO SE USA es-tabla EN BABEL
+	\renewcommand{\listtablename}{Índice de tablas}     %DESCOMENTAR SI NO SE USA es-tabla EN BABEL
+	\renewcommand{\bibname}{REFERENCIAS}   %Correccion a babel
+	\renewcommand{\appendixname}{APÉNDICE}                %Correccion a babel
+	\renewcommand{\contentsname}{ÍNDICE GENERAL}
+	\renewcommand{\listfigurename}{LISTA DE FIGURAS}
+	\renewcommand{\listtablename}{LISTA DE TABLAS}
+	\settowidth\parindent{\ \ \ }                         %Sangria
+	\pagenumbering{roman}                                 %Numeracion romana para primeras paginas
+	\fancyfoot{}
+	\fancyhead[r]{\thepage}
+	\pagestyle{fancy}
+	\maketitle                                            %Hace caratula y pagina de titulo
+	\addtolength{\topmargin}{-2.5pt}                      %Correccion ligera al margen superior, puede depender de la letra
+	\setlength{\parskip}{6pt}                             %Distancia entre parrafos (interlineado + 6pt)
+	\DeclareCaptionLabelSeparator{punto}{. }              %Como separa etiqueta de texto (figuras y tablas)
+	\captionsetup[table]{labelsep=punto,labelfont=rm,aboveskip=6pt,belowskip=\baselineskip-6pt, position=top}
+	\captionsetup[figure]{labelsep=punto,labelfont=rm,aboveskip=8pt,belowskip=\baselineskip-6pt, position=bottom}
 }
+
+
+%--------------------------- entornos para figuras
+\def\shadowshift{2pt,-2pt}
+\def\shadowradius{3.5pt}
+
+\colorlet{innercolor}{black!60}
+\colorlet{outercolor}{gray!05}
+
+\newcommand\drawshadow[1]{
+	\begin{pgfonlayer}{shadow}
+\shade[outercolor,inner color=innercolor,outer color=outercolor] ($(#1.south west)+(\shadowshift)+(\shadowradius/2,\shadowradius/2)$) circle (\shadowradius);
+ \shade[outercolor,inner color=innercolor,outer color=outercolor] ($(#1.north west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$) circle (\shadowradius);
+\shade[outercolor,inner color=innercolor,outer color=outercolor] ($(#1.south east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$) circle (\shadowradius);
+\shade[outercolor,inner color=innercolor,outer color=outercolor] ($(#1.north east)+(\shadowshift)+(-\shadowradius/2,-\shadowradius/2)$) circle (\shadowradius);
+\shade[top color=innercolor,bottom color=outercolor]($(#1.south west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$) rectangle ($(#1.south east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$);
+\shade[left color=innercolor,right color=outercolor]($(#1.south east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$) rectangle ($(#1.north east)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$);
+ \shade[bottom color=innercolor,top color=outercolor]($(#1.north west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$) rectangle ($(#1.north east)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$);
+ \shade[outercolor,right color=innercolor,left color=outercolor] ($(#1.south west)+(\shadowshift)+(-\shadowradius/2,\shadowradius/2)$) rectangle ($(#1.north west)+(\shadowshift)+(\shadowradius/2,-\shadowradius/2)$);
+ \filldraw[draw=innercolor,fill=innercolor]($(#1.south west)+(\shadowshift)+(\shadowradius/2,\shadowradius/2)$) rectangle ($(#1.north east)+(\shadowshift)-(\shadowradius/2,\shadowradius/2)$);
+    \end{pgfonlayer}
+}
+
+\pgfdeclarelayer{shadow} 
+\pgfsetlayers{shadow,main}
+\newif\if@sombra \@sombrafalse
+\newcommand{\sombra}{\@sombratrue}
+\newif\if@marco \@marcofalse
+\newcommand{\marco}{\@marcotrue}
+
+\newcommand{\imagen}[2][]{
+	\begin{tikzpicture}
+		\if@sombra
+			\if@marco
+				\node[anchor=south west,inner sep=0] (image) at (0,0) {\fcolorbox{black}{white}{\includegraphics[#1]{#2}}};
+			\else
+				\node[anchor=south west,inner sep=0] (image) at (0,0) {\colorbox{white}{\includegraphics[#1]{#2}}};
+			\fi
+			\drawshadow{image}
+		\else
+			\if@marco
+				\node[anchor=south west,inner sep=0] (image) at (0,0) {\fcolorbox{black}{white}{\includegraphics[#1]{#2}}};
+			\else
+				\node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[#1]{#2}};
+			\fi
+		\fi
+	\end{tikzpicture}
+}
+
+%--------------------------- fin entornos para figuras
+
+
 
 \endinput

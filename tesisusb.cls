@@ -55,13 +55,13 @@
 \ProvidesClass{tesisusb}
               [2005/09/16 v1.4f
  Standard LaTeX document class]
+ 
 \newcommand\@ptsize{}
 \newif\if@restonecol
-\newif\if@titlepage
-\@titlepagetrue
+\newif\if@titlepage \@titlepagetrue
 \newif\if@openright
 \newif\if@mainmatter \@mainmattertrue
-\if@compatibility\else
+
 \DeclareOption{a4paper}
    {\setlength\paperheight {297mm}%
     \setlength\paperwidth  {210mm}}
@@ -84,35 +84,19 @@
    {\setlength\@tempdima   {\paperheight}%
     \setlength\paperheight {\paperwidth}%
     \setlength\paperwidth  {\@tempdima}}
-\fi
-\if@compatibility
-  \renewcommand\@ptsize{0}
-\else
+
 \DeclareOption{10pt}{\renewcommand\@ptsize{0}}
-\fi
 \DeclareOption{11pt}{\renewcommand\@ptsize{1}}
 \DeclareOption{12pt}{\renewcommand\@ptsize{2}}
-\if@compatibility\else
 \DeclareOption{oneside}{\@twosidefalse \@mparswitchfalse}
-\fi
 \DeclareOption{twoside}{\@twosidetrue  \@mparswitchtrue}
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
-\if@compatibility\else
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
-\fi
 \DeclareOption{titlepage}{\@titlepagetrue}
-\if@compatibility\else
 \DeclareOption{notitlepage}{\@titlepagefalse}
-\fi
-\if@compatibility
-\@openrighttrue
-\else
 \DeclareOption{openright}{\@openrighttrue}
 \DeclareOption{openany}{\@openrightfalse}
-\fi
-\if@compatibility\else
 \DeclareOption{onecolumn}{\@twocolumnfalse}
-\fi
 \DeclareOption{twocolumn}{\@twocolumntrue}
 \DeclareOption{leqno}{\input{leqno.clo}}
 \DeclareOption{fleqn}{\input{fleqn.clo}}
@@ -127,25 +111,13 @@
    \renewcommand\newblock{\par}}%
 }
 %--------------- OTRAS OPCIONES inicio
-%
-%
-% \newif\if@encoding
-% \@encodingfalse
-% \DeclareOption{utf8}{
-%   \@encodingtrue
-%   \PassOptionsToPackage{\CurrentOption}{inputenc}
-% }
-% \DeclareOption{latin1}{
-%   \@encodingtrue
-%   \PassOptionsToPackage{\CurrentOption}{inputenc}
-% }
+
 \DeclareOption*{
   \PassOptionsToPackage{\CurrentOption}{tesisusb}
-%   \PassOptionsToPackage{\CurrentOption}{inputenc}
 }
-%
-%
+
 %--------------- OTRAS OPCIONES fin
+
 \ExecuteOptions{letterpaper,12pt,oneside,onecolumn,final}
 \ProcessOptions
 \input{bk1\@ptsize.clo}
@@ -210,86 +182,95 @@
     }
 
        %%%%%%%%%%%%%%%%%%%%%%%%% PAQUETES NECESARIOS EN LA CLASE comienzo
+
 \RequirePackage{ifpdf}
-\RequirePackage{graphicx}
 \RequirePackage{ifthen}
+
+\RequirePackage{graphicx}
 \RequirePackage[decimalsymbol=comma]{siunitx}
-\RequirePackage{ifxetex}
-\ifxetex
-  \RequirePackage{fontspec}
-  \setmainfont{Times New Roman}
-  \RequirePackage{polyglossia}
-  \setmainlanguage{spanish}
-\else
-  \RequirePackage[T1]{fontenc}
-  \RequirePackage[utf8]{inputenc}
-  \RequirePackage[spanish,activeacute]{babel}
-  \RequirePackage{lmodern}
-\fi
+\RequirePackage{fontspec}
+\setmainfont{Times New Roman}
+
+%\RequirePackage{ifxetex}
+%\RequirePackage{polyglossia}
+%\setmainlanguage{spanish}
 
        %%%%%%%%%%%%%%%%%%%%%%%%% PAQUETES NECESARIOS EN LA CLASE fin
+
        %%%%%%%%%%%%%%%%%%%%%%%%% CARATULA Y PAGINA DE TITULO comienzo
-% \newcommand{\@cebolla}{cebolla}
-% \newcommand{\logoUSB}[1]{\renewcommand{\@cebolla}{#1}}
+
+\newcommand{\@nomcap}{CAPÍTULO}
+\newcommand{\apendices}{
+	\appendix
+	\renewcommand\thesection {\thechapter.\@arabic\c@section}
+	\renewcommand{\@nomcap}{APÉNDICE}
+}
 \newcommand{\@institucion}{Universidad Simón Bolívar}
 \newcommand{\universidad}[1]{\renewcommand{\@institucion}{#1}}
 \newcommand{\instituto}[1]{\renewcommand{\@institucion}{#1}}
 \newcommand{\@decanato}{Decanato de Estudios Profesionales}
 \newcommand{\decanato}[1]{\renewcommand{\@decanato}{#1}}
 \newcommand{\@coordinacion}{Coordinación de Física}
-%\newcommand{\@coordinacion}{Coordinaci\'on de F\'{\i}sica}
 \newcommand{\coordinacion}[1]{\renewcommand{\@coordinacion}{#1}}
 \newcommand{\@programa}{Licenciatura en Física}
 \newcommand{\programa}[1]{\renewcommand{\@programa}{#1}}
+\newcommand{\@titulogrado}{Licenciado en Física}
+\newcommand{\titulo}[1]{\renewcommand{\@title}{{#1}}}
+\newcommand{\titulogrado}[1]{\renewcommand{\@titulogrado}{#1}}
 \newcommand{\@carnet}{XX-XXXXX}
 \newcommand{\carnet}[1]{\renewcommand{\@carnet}{#1}}
+\newcommand{\autor}[1]{\renewcommand{\@author}{#1}}
+\newcommand{\fecha}[1]{\renewcommand{\@date}{#1}}
 \newcommand{\@opcion}{}
-%\newcommand{\pasantia}{\renewcommand{\@opcion}{Informe de Pasant\'{\i}a}}
+\newcommand{\@pdemOpcion}{Este}
+\newcommand{\@generoOpcion}{o}
 
-\newcommand{\pasantia}{\renewcommand{\@opcion}{Informe de Pasantía}}
+\newcommand{\informepasantia}{\renewcommand{\@opcion}{Informe de Pasantía}}
 \newcommand{\tesispregrado}{\renewcommand{\@opcion}{Proyecto de Grado}}
 \newcommand{\tesismaestria}{\renewcommand{\@opcion}{Trabajo de Grado}}
+\newcommand{\tesisdoctoral}{
+	\renewcommand{\@opcion}{Tesis Doctoral}
+	\renewcommand{\@pdemOpcion}{Esta}
+	\renewcommand{\@generoOpcion}{a}
+}
 
-\newcommand{\mensajepresentacionA}{{\@opcion} presentado ante la Universidad Simón Bolívar por}
+\newcommand{\mensajepresentacionA}{{\@opcion} presentad{\@generoOpcion} ante la {\@institucion} por}
 \newcommand{\mensajepresentacionB}{como requisito parcial para optar al grado académico de}
 
 \newcommand{\@mencionsobresaliente}{}
 \newcommand{\mencionsobresaliente}{\renewcommand{\@mencionsobresaliente}{con mencion sobresaliente }}
 
-\newcommand{\@mensajeaprobacion}{\@opcion\ ha sido aprobado \@mencionsobresaliente en nombre de la \@institucion\ por el siguiente jurado examinador: }
-\newcommand{\mensajeaprobacion}{Este \@mensajeaprobacion}
-
-\newcommand{\tesisdoctoral}{
-	\renewcommand{\@opcion}{Tesis Doctoral}
-	\renewcommand{\mensajepresentacionA}{{\@opcion} presentada ante la Universidad Simón Bolívar por}
-	\renewcommand{\mensajeaprobacion}{Esta \@mensajeaprobacion}
-}
-
-\newcommand{\@titulogrado}{Licenciado en Física}
-\newcommand{\titulogrado}[1]{\renewcommand{\@titulogrado}{#1}}
+\newcommand{\@mensajeaprobacion}{\@pdemOpcion\ \@opcion\ ha sido aprobad\@generoOpcion\ \@mencionsobresaliente en nombre de la \@institucion\ por el siguiente jurado examinador: }
+\newcommand{\mensajeaprobacion}{\@mensajeaprobacion}
 
 \newif\if@haytutor \@haytutorfalse
 \newif\if@haycotutor \@haycotutorfalse
 \newif\if@hayasesor \@hayasesorfalse
 
-\newcommand{\@tutor}{\@haytutorfalse}
-\newcommand{\@cotutor}{\@haycotutorfalse}
-\newcommand{\@asesor}{\@hayasesorfalse}
+\newcommand{\@tutor}{}
+\newcommand{\@cotutor}{}
+\newcommand{\@asesor}{}
 
+\newif\if@tutorF \@tutorFfalse		%tutor femenino
+\newif\if@cotutorF \@cotutorFfalse	%cotutor femenino
+\newif\if@asesorF \@asesorFfalse	%asesor femenino
 
 \newcommand{\tutor}[2][]{
 	\@haytutortrue
-	\ifthenelse{\equal{#1}{}}
-		{\renewcommand{\@tutor}{#2}}
-		{\renewcommand{\@tutor}{#1: #2}}
+	\renewcommand{\@tutor}{#2}
+	\ifthenelse{\equal{#1}{f}}
+		{\@tutorFtrue}
+		{\@tutorFfalse}
 }
+
 \newcommand{\cotutor}[2][]{
 	\@haycotutortrue
-	\ifthenelse{\equal{#1}{}}
-		{\renewcommand{\@cotutor}{#2}}
-		{\renewcommand{\@cotutor}{\@haycotutortrue #1: #2}}
+	\ifthenelse{\equal{#1}{f}}
+		{\@cotutorFtrue}
+		{\@cotutorFfalse}
 }
-\newcommand{\asesor}[2][]{
+
+\newcommand{\asesor}[2]{
 	\@hayasesortrue
 	\ifthenelse{\equal{#1}{}}
 		{\renewcommand{\@asesor}{#2}}
@@ -299,20 +280,38 @@
 \newcommand{\mensajeasesoria}{Con la asesoría de}
 
 \newcommand{\@tutores}{
-	\ifthenelse{\boolean{@haytutor}}
-	{
-		\renewcommand{\mensajeasesoria}
-		{
-			Con la asesoría del profesor\par\vspace{1.5ex}
-			\@tutor
-		}
-		\if@haycotutor
+	\if@haytutor
+		\if@tutorF
 			\renewcommand{\mensajeasesoria}
 			{
-				Con la asesoría de los profesores\par\vspace{1.5ex}
-				\@tutor\\
-				\@cotutor
+				Con la asesoría de la profesora\par\vspace{1.5ex}
+				\@tutor
 			}
+		\else
+			\renewcommand{\mensajeasesoria}
+			{
+				Con la asesoría del profesor\par\vspace{1.5ex}
+				\@tutor
+			}
+		\fi
+		\if@haycotutor
+			\if@tutorF
+				\if@cotutorF
+					\renewcommand{\mensajeasesoria}
+					{
+						Con la asesoría de las profesoras\par\vspace{1.5ex}
+						\@tutor\\
+						\@cotutor
+					}
+				\fi
+			\else
+				\renewcommand{\mensajeasesoria}
+				{
+					Con la asesoría de los profesores\par\vspace{1.5ex}
+					\@tutor\\
+					\@cotutor
+				}
+			\fi
 		\fi
 		\if@hayasesor
 			\renewcommand{\mensajeasesoria}
@@ -323,18 +322,21 @@
 			}
 		\fi
 		\mensajeasesoria
-	}
-	{
+	\else
 		\ClassWarningNoLine{tesisusb}
-		{No se especifico ningun tutor.\MessageBreak Debe especificarse un tutor y \MessageBreak opcionalmente un asesor.}
-	}
+		{
+		No se especifico ningun tutor.\MessageBreak 
+		Debe especificarse un tutor y \MessageBreak 
+		opcionalmente un cotutor o un \MessageBreak
+		asesor.}
+	\fi
 }
 
 \newif\if@aprobacionjurado \@aprobacionjuradofalse
 \newcommand{\aprobacionjurado}{\@aprobacionjuradotrue}
 
-\newcommand{\@approvaldate}{}
-\newcommand{\approvaldate}[1]{\renewcommand{\@approvaldate}{#1}}
+\newcommand{\@fechaaprobacion}{}
+\newcommand{\fechaaprobacion}[1]{\renewcommand{\@fechaaprobacion}{#1}}
 
 \newif\if@hayjuradoA \@hayjuradoAfalse
 \newif\if@hayjuradoB \@hayjuradoBfalse
@@ -383,6 +385,10 @@
 \newcommand{\agradecimientos}[1]{\@hayagradecimientostrue\renewcommand{\@agradecimientos}{#1}}
 \newcommand{\resumen}[1]{\@hayresumentrue\renewcommand{\@resumen}{#1}}
 \newcommand{\palabrasclave}[1]{\@haypalabrasclavetrue \renewcommand{\@palabrasclave}{#1}}
+
+\newcommand{\indicegeneral}{\tableofcontents}
+\newcommand{\listadetablas}{\listoftables}
+\newcommand{\listadefiguras}{\listoffigures}
 
 \newif\if@cebolla \@cebollafalse
 \newcommand{\@nombrelogo}{cebolla}
@@ -460,7 +466,7 @@
 			{\MakeUppercase{\@decanato}}\par
 			{\MakeUppercase{\@coordinacion}}\par
 			{\MakeUppercase{\@programa}}\par\vfill
-			{\bfseries\@title} \par}\vfill
+			{\MakeUppercase{\bfseries\@title}} \par}\vfill
 			{\flushright\bfseries\large
 			Por: \@author \par 
 			Carnet No: \@carnet \par}\vfill
@@ -479,7 +485,7 @@
 			
 		    {\bfseries\large\centering
 		    
-		    	{\@approvaldate}
+		    	{\@fechaaprobacion}
 		    	
 		    }
 			
@@ -515,7 +521,7 @@
 			{\MakeUppercase{\@decanato}}\par
 			{\MakeUppercase{\@coordinacion}}\par
 			{\MakeUppercase{\@programa}}\par\vspace{1.5em}
-			{\bfseries\@title} \par}\vspace{1.5em}
+			{\MakeUppercase{\bfseries\@title}} \par}\vspace{1.5em}
 			{\flushright\large
 			\textbf{Por:} \@author \par 
 			\textbf{Carnet No:} \@carnet \par
@@ -696,7 +702,7 @@
                          \refstepcounter{chapter}%
                          \typeout{\@chapapp\space\thechapter.}%
                          \addcontentsline{toc}{chapter}%
-                                   {CAPÍTULO \protect\numberline{\thechapter:} #1}%  linea original
+                                   {\@nomcap\ \protect\numberline{\thechapter:} #1}
                        \else
                          \addcontentsline{toc}{chapter}{#1}%
                        \fi
@@ -728,7 +734,7 @@
     \normalsize \bfseries #1\par\nobreak
     \vskip 20\p@
   }}
-\def\@schapter#1{\if@hyp \phantomsection \fi
+\def\@schapter#1{ \phantomsection
 %                  \ifthenelse{\equal{#1}{\contentsname} \or %
 %                              \equal{#1}{\listfigurename} \or %
 %                              \equal{#1}{\listtablename}}
