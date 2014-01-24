@@ -1,28 +1,33 @@
 %%	Esta es la plantilla para comenzar a crear un libro de tesis.
-%%	En los comentarios se pueden encontrar los diferentes comandos
-%%	que se pueden usar para personalizar el trabajo.
+%%	En los comentarios se pueden encontrar los diferentes comandos que se pueden
+%%	usar para personalizar el trabajo.
 %%
 %%	La clase tesisusb está basada por la que creó Kevin Hernandez en 2005.
-%%	Esta versión requiere del motor texlive-xetex, y del paquete 
-%%	texlive-latex3.
+%%	Se recomienda el uso del motor texlive-xetex.
 %%
 %%	Se dispone de un comando para insertar imágenes: \imagen[]{}
-%%	se usa en forma parecida a \includegraphics, pero permite
-%%	marco y sombras. El código fuente que permite hacer esto fue
+%%	se usa en forma parecida a \includegraphics, pero puede dibujar
+%%	marcos y sombras. El código fuente que permite hacer esto fue
 %%	conseguido en http://tex.stackexchange.com/a/11483/3954
 
-\documentclass[]{tesisusb}
 %%	La clase tesisusb carga por defecto los siguientes paquetes:
-%%		graphicx,siunitx,fontspec
-\usepackage[]{tesisusb}
+%%		graphicx
+%%		fontspec 			- Para letras acentuadas, sólo con xetex.
+%%		inputenc con utf8 	- Para letras acentuadas, si no se usa xetex.
+%%
+%%	Opciones para la clase tesisusb.cls
+%%		ttftimes		- Para usar Times New Roman verdadero. Requiere ttf-mscorefonts.
+\documentclass[ttftimes]{tesisusb}
+
 %%	El paquete tesisusb carga por defecto los siguientes paquetes:
 %%		calc,setspace,fancyhdr,geometry,textcase,indentfirst,
 %%		caption,subcaption,tocloft,hyperref,cite,calc,tikz.
+\usepackage[]{tesisusb}
 
 \include{lib/config}			% Para incluir los paquetes extra que se necesiten
 \usepackage{lipsum}
 
-%\include{lib/funciones}		% 
+\include{lib/funciones}		% Para definir los nuevos comandos que se necesiten
 
 %%	=================
 %%	Datos del Trabajo
@@ -107,7 +112,6 @@
 \palabrasclave{PC1, PC2, PC3, etc.}
 
 \begin{document}
-
 
 % ÍNDICE DE CONTENIDOS
 \indicegeneral

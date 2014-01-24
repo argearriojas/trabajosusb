@@ -111,6 +111,8 @@
    \renewcommand\newblock{\par}}%
 }
 %--------------- OTRAS OPCIONES inicio
+\newif\if@ttftimes \@ttftimesfalse
+\DeclareOption{ttftimes}{\@ttftimestrue}
 
 \DeclareOption*{
   \PassOptionsToPackage{\CurrentOption}{tesisusb}
@@ -184,16 +186,23 @@
        %%%%%%%%%%%%%%%%%%%%%%%%% PAQUETES NECESARIOS EN LA CLASE comienzo
 
 \RequirePackage{ifpdf}
+\RequirePackage{ifxetex}
 \RequirePackage{ifthen}
 
 \RequirePackage{graphicx}
-\RequirePackage[decimalsymbol=comma]{siunitx}
-\RequirePackage{fontspec}
-\setmainfont{Times New Roman}
 
-%\RequirePackage{ifxetex}
+
 %\RequirePackage{polyglossia}
 %\setmainlanguage{spanish}
+
+\ifxetex
+	\RequirePackage{fontspec}
+	\if@ttftimes
+		\setmainfont{Times New Roman}
+	\fi
+\else
+	\RequirePackage[utf8]{inputenc}
+\fi
 
        %%%%%%%%%%%%%%%%%%%%%%%%% PAQUETES NECESARIOS EN LA CLASE fin
 
